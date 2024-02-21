@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gdsc_project/login/home.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -102,15 +103,57 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     )),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 10.0),
               GestureDetector(
-                child: const Text(
-                  '회원 가입',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
                 onTap: () {
                   Get.to(() => const JoinPage());
                 },
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: Card(
+                    color: const Color(0xffC0EBC4),
+                    //margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 2,
+                    child: const Center(
+                      child: Text(
+                        '회원 가입',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  signInWithGoogle();
+                },
+                child: Card(
+                  margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('images/google.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Sign In With Google',
+                        style: TextStyle(color: Colors.grey, fontSize: 17),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -176,4 +219,22 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
+}
+
+Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
 }
