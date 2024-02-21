@@ -19,7 +19,9 @@ class _JoinPageState extends State<JoinPage> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+        //border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
         labelText: '이메일',
       ),
       validator: (String? value) {
@@ -37,7 +39,9 @@ class _JoinPageState extends State<JoinPage> {
       obscureText: true,
       keyboardType: TextInputType.visiblePassword,
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+        //border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
         labelText: '비밀번호',
       ),
       validator: (String? value) {
@@ -52,7 +56,9 @@ class _JoinPageState extends State<JoinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff81C784),
       appBar: AppBar(
+        backgroundColor: const Color(0xff81C784),
         title: const Text("회원 가입"),
         centerTitle: true,
       ),
@@ -67,8 +73,14 @@ class _JoinPageState extends State<JoinPage> {
               _passwordWidget(),
               const SizedBox(height: 20.0),
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(const Color(0xff1B5220)),
+                ),
                 onPressed: () => _register(),
-                child: const Text("회원 가입"),
+                child: const Text("회원 가입",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+
               ),
             ],
           ),
