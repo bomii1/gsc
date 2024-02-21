@@ -1,5 +1,5 @@
 import 'package:gdsc_project/login/join_page.dart';
-import 'package:gdsc_project/main.dart';
+import 'package:gdsc_project/login/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,22 +14,26 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController(); //입력되는 값을 제어
+  final TextEditingController _emailController =
+      TextEditingController(); //입력되는 값을 제어
   final TextEditingController _passwordController = TextEditingController();
 
   // 로그인 폼 상단에 이미지가 표시된다. 이미지가 없어도 동작은 하나, X표시 처리.
   //String _imageFile = 'assets/images/main.png';
 
-  Widget _userIdWidget(){
+  Widget _userIdWidget() {
     return TextFormField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
+        //border: OutlineInputBorder(),
         labelText: '이메일',
       ),
-      validator: (String? value){
-        if (value!.isEmpty) {// == null or isEmpty
+      validator: (String? value) {
+        if (value!.isEmpty) {
+          // == null or isEmpty
           return '이메일을 입력해주세요.';
         }
         return null;
@@ -37,17 +41,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _passwordWidget(){
+  Widget _passwordWidget() {
     return TextFormField(
       controller: _passwordController,
       obscureText: true,
       keyboardType: TextInputType.visiblePassword,
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
+        //border: OutlineInputBorder(),
         labelText: '비밀번호',
       ),
-      validator: (String? value){
-        if (value!.isEmpty) {// == null or isEmpty
+      validator: (String? value) {
+        if (value!.isEmpty) {
+          // == null or isEmpty
           return '비밀번호를 입력해주세요.';
         }
         return null;
@@ -58,8 +65,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff81C784),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: const Color(0xff81C784),
         title: const Text("로그인"),
         centerTitle: true,
       ),
@@ -74,19 +83,32 @@ class _LoginPageState extends State<LoginPage> {
               _userIdWidget(),
               const SizedBox(height: 20.0),
               _passwordWidget(),
+              const SizedBox(height: 10.0),
               Container(
                 height: 70,
                 width: double.infinity,
-                padding: const EdgeInsets.only(top: 8.0), // 8단위 배수가 보기 좋음
+                padding: const EdgeInsets.only(top: 16.0), // 8단위 배수가 보기 좋음
                 child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xff1B5220)),
+                    ),
                     onPressed: () => _login(),
-                    child: const Text("로그인")
-                ),
+                    child: const Text(
+                      "로그인",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
               ),
               const SizedBox(height: 20.0),
               GestureDetector(
-                child: const Text('회원 가입'),
-                onTap: (){
+                child: const Text(
+                  '회원 가입',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
                   Get.to(() => const JoinPage());
                 },
               ),
@@ -102,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
     //해당 클래스가 호출되었을떄
     super.initState();
   }
+
   @override
   void dispose() {
     // 해당 클래스가 사라질떄
@@ -151,8 +174,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       }
-
     }
   }
-
 }
